@@ -1,4 +1,4 @@
 {
   "ignore": ["node_modules"],
-  "exec": "node ./index.js"
+  "ext": ".ts"
 }
