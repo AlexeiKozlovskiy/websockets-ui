@@ -1,9 +1,11 @@
+import { WebSocket } from 'ws';
 export interface MessageReq {
   type:
     | 'reg'
     | 'update_winners'
     | 'create_room'
     | 'add_user_to_room'
+    | 'add_player_to_room'
     | 'create_game'
     | 'update_room'
     | 'add_ships'
@@ -18,5 +20,11 @@ export interface MessageReq {
 
 export interface Player {
   name: string;
+  playerId: number;
   password: string;
+  ws?: WebSocket;
+}
+export interface Room {
+  roomId: number;
+  roomUsers: WebSocket[];
 }
