@@ -27,4 +27,15 @@ export interface Player {
 export interface Room {
   roomId: number;
   roomUsers: WebSocket[];
+  // roomUsers: [
+  //   {
+  //     name: string;
+  //     index: number;
+  //   }
+  // ];
 }
+
+export type Game = {
+  idGame: number;
+  players: Player[];
+};
