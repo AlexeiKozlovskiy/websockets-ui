@@ -22,20 +22,20 @@ export interface Player {
   name: string;
   playerId: number;
   password: string;
-  ws?: WebSocket;
+  ws: WebSocket;
 }
 export interface Room {
   roomId: number;
-  roomUsers: WebSocket[];
-  // roomUsers: [
-  //   {
-  //     name: string;
-  //     index: number;
-  //   }
-  // ];
+  // roomUsers: WebSocket[];
+  roomUsers: [
+    {
+      name: string;
+      index: number;
+    }
+  ];
 }
 
-export type Game = {
+export interface Game {
   idGame: number;
   players: Player[];
-};
+}

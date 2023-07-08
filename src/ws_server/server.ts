@@ -1,4 +1,4 @@
-import { WebSocketServer, WebSocket, RawData } from 'ws';
+import { WebSocketServer, WebSocket, Data } from 'ws';
 import * as dotenv from 'dotenv';
 // import { Player, Room } from '../types';
 import { players, rooms, games } from '../db';
@@ -13,10 +13,11 @@ export function websocketServer(PORT: number) {
 
   wss.on('connection', (ws) => {
     console.log('New WebSocket connection');
+    ws.on('error', console.error);
 
-    ws.on('message', (message: RawData) => {
+    ws.on('message', (message: string) => {
       try {
-        const { type, data, id } = JSON.parse(message.toString());
+        const { type, data, id } = JSON.parse(message);
         switch (type) {
           case 'reg':
             registration(ws, data, id);

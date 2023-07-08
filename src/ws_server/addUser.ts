@@ -1,11 +1,11 @@
 import { WebSocket } from 'ws';
-import { rooms } from '../db';
-import { Game } from '../types';
+import { rooms, players, games } from '../db';
+import { Game, Room, Player } from '../types';
 
 export function addUserToRoom(ws: WebSocket, data: Game, id: number) {
   const { indexRoom } = JSON.parse(data.toString());
 
-  if (indexRoom < 0 || indexRoom >= rooms.length) {
+  if (indexRoom < 0 || in, dexRoom >= rooms.length) {
     console.log('Invalid room index');
     return;
   }
