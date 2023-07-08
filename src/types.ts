@@ -26,7 +26,6 @@ export interface Player {
 }
 export interface Room {
   roomId: number;
-  // roomUsers: WebSocket[];
   roomUsers: [
     {
       name: string;
@@ -34,8 +33,18 @@ export interface Room {
     }
   ];
 }
-
 export interface Game {
   idGame: number;
   players: Player[];
 }
+
+export interface AddUser {
+  indexRoom: number;
+}
+
+export interface WsMessage {
+  type: string;
+  data: DataWsMessage;
+  id: number;
+}
+export interface DataWsMessage extends Player, AddUser {}

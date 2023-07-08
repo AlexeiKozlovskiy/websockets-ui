@@ -1,28 +1,36 @@
 import { WebSocket } from 'ws';
 import { rooms, players, games } from '../db';
-import { Game, Room, Player } from '../types';
+import { Game, Room, Player, AddUser } from '../types';
 
-export function addUserToRoom(ws: WebSocket, data: Game, id: number) {
+export const addUserToRoom = (wss: WebSocket, data: AddUser, id: number) => {
   const { indexRoom } = JSON.parse(data.toString());
+  const roomActive: Room = rooms.find(({ roomId }) => roomId === indexRoom) as Room;
+  const activePlayer: Player = players.find(({ ws }) => ws === wss) as Player;
+  const indexPlayerActive = roomActive.roomUsers[0].index;
+  const waitingPlayer: Player = players.find(({ playerId }) => playerId === indexPlayerActive) as Player;
 
-  if (indexRoom < 0 || in, dexRoom >= rooms.length) {
-    console.log('Invalid room index');
-    return;
+  if (indexPlayerActive !== activePlayer.playerId) {
+    const idGame = games.length;
+    const game: Game = { idGame, players: [activePlayer, waitingPlayer] };
+    games.push(game);
+
+    const dataActive = {
+      type: 'create_game',
+      data: JSON.stringify({
+        idGame,
+        idPlayer: activePlayer.playerId,
+      }),
+      id,
+    };
+    activePlayer.ws.send(JSON.stringify(dataActive));
+    const dataWait = {
+      type: 'create_game',
+      data: JSON.stringify({
+        idGame,
+        idPlayer: waitingPlayer.playerId,
+      }),
+      id,
+    };
+    waitingPlayer.ws.send(JSON.stringify(dataWait));
   }
-
-  const room = rooms[indexRoom];
-  // room.roomUsers.push({ ws, playerId: ws.playerId });
-  // rooms.splice(indexRoom, 1);
-
-  const response = {
-    type: 'create_game',
-    data: JSON.stringify({
-      idGame: room.roomId,
-      idPlayer: room.roomUsers.length - 1,
-    }),
-    id,
-  };
-  ws.send(JSON.stringify(response));
-
-  // updateRoomState(room);
-}
+};

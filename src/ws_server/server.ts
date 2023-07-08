@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 import { registration } from './registration';
 import { updateRoom } from './updateRoom';
 import { addUserToRoom } from './addUser';
+import { WsMessage } from '../types';
 
 dotenv.config();
 
@@ -11,10 +12,10 @@ export function websocketServer(PORT: number) {
 
   wss.on('connection', (ws) => {
     console.log('New WebSocket connection');
-    
+
     ws.on('message', (message: string) => {
       try {
-        const { type, data, id } = JSON.parse(message);
+        const { type, data, id } = JSON.parse(message) as WsMessage;
         switch (type) {
           case 'reg':
             registration(ws, data, id);
