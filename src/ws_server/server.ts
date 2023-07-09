@@ -3,35 +3,36 @@ import * as dotenv from 'dotenv';
 import { registration } from './registration';
 import { updateRoom } from './updateRoom';
 import { addUserToRoom } from './addUser';
-import { WsMessage } from '../types';
+import { MessageRequest, MessageType } from '../types';
+import { WebSocket } from 'ws';
 
 dotenv.config();
 
 export function websocketServer(PORT: number) {
   const wss = new WebSocketServer({ port: PORT });
 
-  wss.on('connection', (ws) => {
+  wss.on('connection', (ws: WebSocket) => {
     console.log('New WebSocket connection');
 
     ws.on('message', (message: string) => {
       try {
-        const { type, data, id } = JSON.parse(message) as WsMessage;
+        const { type, data, id } = JSON.parse(message) as MessageRequest;
         switch (type) {
-          case 'reg':
+          case MessageType.REG:
             registration(ws, data, id);
             break;
-          case 'create_room':
+          case MessageType.CREATE_ROOM:
             updateRoom(ws, id);
             break;
-          case 'add_user_to_room':
+          case MessageType.ADD_USER_TO_ROOM:
             addUserToRoom(ws, data, id);
             break;
-          case 'turn':
+          case MessageType.ADD_SHIPS:
             break;
-          case 'attack':
+          case MessageType.ATTACK:
             break;
           default:
-            console.log('Invalid request type');
+            console.log('Unknown request type');
             break;
         }
       } catch (error) {

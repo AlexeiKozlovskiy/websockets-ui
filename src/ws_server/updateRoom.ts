@@ -2,7 +2,7 @@ import { WebSocket } from 'ws';
 import { Room } from '../types';
 import { players, rooms } from '../db';
 
-const updateDB = (name: string, index: number) => {
+const updateData = (name: string, index: number) => {
   const newRoom: Room = {
     roomId: rooms.length,
     roomUsers: [{ name, index }],
@@ -13,7 +13,7 @@ const updateDB = (name: string, index: number) => {
 export const updateRoom = (wss: WebSocket, id: number) => {
   players.forEach(({ name, playerId, ws }) => {
     if (wss === ws) {
-      updateDB(name, playerId);
+      updateData(name, playerId);
     }
   });
   players.forEach(({ ws }) => {

@@ -2,7 +2,7 @@ import { WebSocket } from 'ws';
 import { players } from '../db';
 import { Player } from '../types';
 
-const updateDB = (ws: WebSocket, data: Player, error: boolean) => {
+const updateData = (ws: WebSocket, data: Player, error: boolean) => {
   const playerIndex = players.length;
   const { name, password } = JSON.parse(data.toString());
   const newPlayer: Player = {
@@ -29,7 +29,7 @@ export const registration = (ws: WebSocket, data: Player, id: number) => {
   const { name } = JSON.parse(data.toString());
   const { error, errorText } = validatePlayer(data);
 
-  const playerIndex = updateDB(ws, data, error);
+  const playerIndex = updateData(ws, data, error);
   const response = {
     type: 'reg',
     data: JSON.stringify({

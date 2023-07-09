@@ -1,8 +1,8 @@
 import { WebSocket } from 'ws';
 import { rooms, players, games } from '../db';
-import { Game, Room, Player, AddUser } from '../types';
+import { Game, Room, Player, AddPlayer } from '../types';
 
-export const addUserToRoom = (wss: WebSocket, data: AddUser, id: number) => {
+export const addUserToRoom = (wss: WebSocket, data: AddPlayer, id: number) => {
   const { indexRoom } = JSON.parse(data.toString());
   const roomActive: Room = rooms.find(({ roomId }) => roomId === indexRoom) as Room;
   const activePlayer: Player = players.find(({ ws }) => ws === wss) as Player;

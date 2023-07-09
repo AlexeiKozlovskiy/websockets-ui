@@ -1,22 +1,20 @@
 import { WebSocket } from 'ws';
-export interface MessageReq {
-  type:
-    | 'reg'
-    | 'update_winners'
-    | 'create_room'
-    | 'add_user_to_room'
-    | 'add_player_to_room'
-    | 'create_game'
-    | 'update_room'
-    | 'add_ships'
-    | 'start_game'
-    | 'attack'
-    | 'randomAttack'
-    | 'turn'
-    | 'finish';
-  data: Player;
+
+export interface MessageRequest {
+  type: MessageType;
+  data: DataWSMessage;
   id: number;
 }
+
+export enum MessageType {
+  REG = 'reg',
+  CREATE_ROOM = 'create_room',
+  ADD_USER_TO_ROOM = 'add_user_to_room',
+  ADD_SHIPS = 'add_ships',
+  ATTACK = 'attack',
+}
+
+export interface DataWSMessage extends Player, AddPlayer {}
 
 export interface Player {
   name: string;
@@ -38,13 +36,6 @@ export interface Game {
   players: Player[];
 }
 
-export interface AddUser {
+export interface AddPlayer {
   indexRoom: number;
 }
-
-export interface WsMessage {
-  type: string;
-  data: DataWsMessage;
-  id: number;
-}
-export interface DataWsMessage extends Player, AddUser {}
