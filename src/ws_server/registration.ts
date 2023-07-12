@@ -1,22 +1,22 @@
 import { WebSocket } from 'ws';
 import { players } from '../db';
-import { Player } from '../types';
+import { Player, MessageType } from '../types';
 
 const updateData = (ws: WebSocket, data: Player, error: boolean) => {
-  const playerIndex = players.length;
-  const { name, password } = JSON.parse(data.toString());
+  const playerId = players.length;
+  const { name, password } = JSON.parse(data.toString()) as Player;
   const newPlayer: Player = {
     ws,
     name,
-    playerId: playerIndex,
+    playerId,
     password,
   };
   if (!error) players.push(newPlayer);
-  return playerIndex;
+  return playerId;
 };
 
 const validatePlayer = (data: Player) => {
-  const { name } = JSON.parse(data.toString());
+  const { name } = JSON.parse(data.toString()) as Player;
   const existingPlayer = players.find((user) => user.name === name);
   if (existingPlayer) {
     return { error: true, errorText: 'Player already exists' };
@@ -26,15 +26,15 @@ const validatePlayer = (data: Player) => {
 };
 
 export const registration = (ws: WebSocket, data: Player, id: number) => {
-  const { name } = JSON.parse(data.toString());
+  const { name } = JSON.parse(data.toString()) as Player;
   const { error, errorText } = validatePlayer(data);
 
-  const playerIndex = updateData(ws, data, error);
+  const index = updateData(ws, data, error);
   const response = {
-    type: 'reg',
+    type: MessageType.REG,
     data: JSON.stringify({
       name,
-      index: playerIndex,
+      index,
       error,
       errorText,
     }),

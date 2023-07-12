@@ -1,9 +1,9 @@
 import { WebSocket } from 'ws';
 import { rooms, players, games } from '../db';
-import { Game, Room, Player, AddPlayer } from '../types';
+import { Game, Room, Player, AddPlayer, MessageType } from '../types';
 
 export const addUserToRoom = (wss: WebSocket, data: AddPlayer, id: number) => {
-  const { indexRoom } = JSON.parse(data.toString());
+  const { indexRoom } = JSON.parse(data.toString()) as AddPlayer;
   const roomActive: Room = rooms.find(({ roomId }) => roomId === indexRoom) as Room;
   const activePlayer: Player = players.find(({ ws }) => ws === wss) as Player;
   const indexPlayerActive = roomActive.roomUsers[0].index;
@@ -15,7 +15,7 @@ export const addUserToRoom = (wss: WebSocket, data: AddPlayer, id: number) => {
     games.push(game);
 
     const dataActive = {
-      type: 'create_game',
+      type: MessageType.CREATE_GAME,
       data: JSON.stringify({
         idGame,
         idPlayer: activePlayer.playerId,
@@ -24,7 +24,7 @@ export const addUserToRoom = (wss: WebSocket, data: AddPlayer, id: number) => {
     };
     activePlayer.ws.send(JSON.stringify(dataActive));
     const dataWait = {
-      type: 'create_game',
+      type: MessageType.CREATE_GAME,
       data: JSON.stringify({
         idGame,
         idPlayer: waitingPlayer.playerId,

@@ -1,5 +1,5 @@
 import { WebSocket } from 'ws';
-import { Room } from '../types';
+import { Room, MessageType } from '../types';
 import { players, rooms } from '../db';
 
 const updateData = (name: string, index: number) => {
@@ -18,7 +18,7 @@ export const updateRoom = (wss: WebSocket, id: number) => {
   });
   players.forEach(({ ws }) => {
     const response = {
-      type: 'update_room',
+      type: MessageType.UPDATE_ROOM,
       data: JSON.stringify(rooms),
       id,
     };

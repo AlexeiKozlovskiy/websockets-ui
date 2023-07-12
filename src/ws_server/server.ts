@@ -5,6 +5,7 @@ import { updateRoom } from './updateRoom';
 import { addUserToRoom } from './addUser';
 import { MessageRequest, MessageType } from '../types';
 import { WebSocket } from 'ws';
+import { startGame } from './startGame';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ export function websocketServer(PORT: number) {
             addUserToRoom(ws, data, id);
             break;
           case MessageType.ADD_SHIPS:
+            startGame(ws, data, id);
             break;
           case MessageType.ATTACK:
             break;
