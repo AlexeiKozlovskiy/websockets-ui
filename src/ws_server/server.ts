@@ -6,6 +6,7 @@ import { addUserToRoom } from './addUser';
 import { MessageRequest, MessageType } from '../types';
 import { WebSocket } from 'ws';
 import { startGame } from './startGame';
+import { attack } from './atack';
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ export function websocketServer(PORT: number) {
             startGame(ws, data, id);
             break;
           case MessageType.ATTACK:
+            attack(data, id);
             break;
           default:
             console.log('Unknown request type');
@@ -41,7 +43,6 @@ export function websocketServer(PORT: number) {
         console.error('Error parsing WebSocket message:', error);
       }
     });
-
     ws.on('close', () => {
       console.log('WebSocket connection closed');
     });

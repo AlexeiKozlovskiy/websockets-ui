@@ -1,5 +1,6 @@
-import { Player, Room, Game } from './types';
+import { Player, Room, Game, DataAddShips } from './types';
 
-export const players: Player[] = [];
-export const rooms: Room[] = [];
-export const games: Game[] = [];
+export const playersDB: Player[] = [];
+export const roomsDB: Room[] = [];
+export const gamesDB: Game[] = [];
+export const shipsDB: DataAddShips[] = [];

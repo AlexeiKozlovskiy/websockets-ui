@@ -1,25 +1,25 @@
 import { WebSocket } from 'ws';
 import { Room, MessageType } from '../types';
-import { players, rooms } from '../db';
+import { playersDB, roomsDB } from '../db';
 
 const updateData = (name: string, index: number) => {
   const newRoom: Room = {
-    roomId: rooms.length,
+    roomId: roomsDB.length,
     roomUsers: [{ name, index }],
   };
-  rooms.push(newRoom);
+  roomsDB.push(newRoom);
 };
-
 export const updateRoom = (wss: WebSocket, id: number) => {
-  players.forEach(({ name, playerId, ws }) => {
+
+  playersDB?.forEach(({ name, playerId, ws }) => {
     if (wss === ws) {
       updateData(name, playerId);
     }
   });
-  players.forEach(({ ws }) => {
+  playersDB?.forEach(({ ws }) => {
     const response = {
       type: MessageType.UPDATE_ROOM,
-      data: JSON.stringify(rooms),
+      data: JSON.stringify(roomsDB),
       id,
     };
     ws.send(JSON.stringify(response));

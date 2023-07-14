@@ -15,9 +15,11 @@ export enum MessageType {
   ADD_SHIPS = 'add_ships',
   START_GAME = 'start_game',
   ATTACK = 'attack',
+  TURN = 'turn',
+  FINISH = 'finish',
 }
 
-export interface DataWSMessage extends Player, AddPlayer, DataAddShips {}
+export interface DataWSMessage extends Player, AddPlayer, DataAddShips, Attack {}
 
 export interface Player {
   name: string;
@@ -50,8 +52,25 @@ export interface DataAddShips {
 }
 
 export interface Ships {
-  position: { x: number; y: number };
+  position: Cordinate;
   direction: boolean;
   length: number;
   type: string;
+  hits?: boolean[];
+}
+
+interface Cordinate {
+  x: number;
+  y: number;
+}
+
+export interface Attack extends Cordinate {
+  gameId: number;
+  indexPlayer: number;
+}
+
+export interface ResAttackData {
+  position: Cordinate;
+  currentPlayer: number;
+  status: string;
 }

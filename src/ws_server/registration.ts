@@ -1,9 +1,9 @@
 import { WebSocket } from 'ws';
-import { players } from '../db';
+import { playersDB } from '../db';
 import { Player, MessageType } from '../types';
 
 const updateData = (ws: WebSocket, data: Player, error: boolean) => {
-  const playerId = players.length;
+  const playerId = playersDB.length;
   const { name, password } = JSON.parse(data.toString()) as Player;
   const newPlayer: Player = {
     ws,
@@ -11,13 +11,13 @@ const updateData = (ws: WebSocket, data: Player, error: boolean) => {
     playerId,
     password,
   };
-  if (!error) players.push(newPlayer);
+  if (!error) playersDB.push(newPlayer);
   return playerId;
 };
 
 const validatePlayer = (data: Player) => {
   const { name } = JSON.parse(data.toString()) as Player;
-  const existingPlayer = players.find((user) => user.name === name);
+  const existingPlayer = playersDB.find((player) => player.name === name);
   if (existingPlayer) {
     return { error: true, errorText: 'Player already exists' };
   } else {
