@@ -9,6 +9,8 @@
 ## Usage
 **Development**
 
+* Rename file `.env.example` to `.env`, default port is 3000
+
 `npm run start:dev`
 
 * App served @ `http://localhost:8181` with nodemon
